@@ -4,6 +4,7 @@ import type { UseFormReturn, Path } from "react-hook-form";
 import type { Option } from "./SelectField";
 
 type Props<FieldValues extends Record<string, unknown>> = {
+	id: string;
 	methods: UseFormReturn<FieldValues, any, undefined>;
 	onSubmit: () => void;
 };
@@ -20,13 +21,13 @@ interface Form<FormValues extends Record<string, unknown>>
 }
 
 const createForm = <FieldValues extends Record<string, any>>(
-	{ methods, onSubmit }: Props<FieldValues>,
+	{ id, methods, onSubmit }: Props<FieldValues>,
 	fields: Form<FieldValues>["Field"],
 	buttons: Form<FieldValues>["Button"],
 ): Form<FieldValues> => {
 	const Form = ({ children }: PropsWithChildren) => (
 		<FormProvider {...methods}>
-			<form onSubmit={onSubmit} noValidate>
+			<form id={id} onSubmit={onSubmit} noValidate>
 				{children}
 			</form>
 		</FormProvider>

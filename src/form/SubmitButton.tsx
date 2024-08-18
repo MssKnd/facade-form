@@ -4,9 +4,9 @@ type Props = {
 	label: string;
 } & Omit<JSX.IntrinsicElements["button"], "type">;
 
-const SubmitButton: FC<Props> = ({ label, ...props }) => {
+const SubmitButton: FC<Props> = ({ id, label, ...props }) => {
 	return (
-		<button type="submit" {...props}>
+		<button form={id} type="submit" {...props}>
 			{label}
 		</button>
 	);

@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { useForm as useRHForm } from "react-hook-form";
 import type { DefaultValues, FieldErrors, Path } from "react-hook-form";
 import { createForm } from "./create-form";
@@ -24,6 +25,7 @@ const useForm = <Values extends Record<string, unknown>>({
 	onSubmit,
 	onInvalidError,
 }: Props<Values>) => {
+	const id = useId();
 	const methods = useRHForm({
 		defaultValues,
 		// @ts-ignore
@@ -34,7 +36,7 @@ const useForm = <Values extends Record<string, unknown>>({
 	const handleSubmit = methods.handleSubmit(onSubmit, onInvalidError);
 
 	const Form = createForm(
-		{ methods, onSubmit: handleSubmit },
+		{ id, methods, onSubmit: handleSubmit },
 		{
 			Text: ({ label, name }: { label: string; name: Path<Values> }) => (
 				<Field label={label} name={name}>
@@ -52,7 +54,7 @@ const useForm = <Values extends Record<string, unknown>>({
 			),
 		},
 		{
-			Submit: (props) => <SubmitButton {...props} />,
+			Submit: (props) => <SubmitButton id={id} {...props} />,
 		},
 	);
 
