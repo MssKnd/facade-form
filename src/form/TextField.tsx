@@ -1,20 +1,10 @@
 import { forwardRef } from "react";
 import { css } from "@emotion/react";
 
-type TProps = Omit<JSX.IntrinsicElements["input"], "type">;
+type Props = Omit<JSX.IntrinsicElements["input"], "type" | "children">;
 
-const TextField = forwardRef<HTMLInputElement, TProps>((props, ref) => {
-	return (
-		<input
-			type="text"
-			ref={ref}
-			{...props}
-			onInvalid={(e) => {
-				e.preventDefault();
-			}}
-			css={style}
-		/>
-	);
+const TextField = forwardRef<HTMLInputElement, Props>((props, ref) => {
+	return <input type="text" ref={ref} {...props} css={style} />;
 });
 
 const style = css`

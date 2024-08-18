@@ -1,6 +1,7 @@
 import type { FC, PropsWithChildren } from "react";
 import { FormProvider } from "react-hook-form";
 import type { UseFormReturn, Path } from "react-hook-form";
+import type { Option } from "./SelectField";
 
 type Props<FieldValues extends Record<string, unknown>> = {
 	methods: UseFormReturn<FieldValues, any, undefined>;
@@ -11,6 +12,7 @@ interface Form<FormValues extends Record<string, unknown>>
 	extends FC<PropsWithChildren> {
 	Field: {
 		Text: FC<{ label: string; name: Path<FormValues> }>;
+		Select: FC<{ label: string; name: Path<FormValues>; options: Option[] }>;
 	};
 	Button: {
 		Submit: FC<{ label: string }>;

@@ -1,11 +1,12 @@
-import { useFormContext } from "react-hook-form";
-import type { Path, UseFormRegisterReturn } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
+import type { ControllerRenderProps } from "react-hook-form";
 import { FormEvent, useId } from "react";
+import type { Path } from "react-hook-form";
 
 type ChildrenProps<FormValues extends Record<string, unknown>> = {
 	id: string;
 	onInvalid: (event: FormEvent) => void;
-} & UseFormRegisterReturn<Path<FormValues>>;
+} & ControllerRenderProps<FormValues, Path<FormValues>>;
 
 type Props<FormValues extends Record<string, unknown>> = {
 	label: string;
@@ -13,13 +14,13 @@ type Props<FormValues extends Record<string, unknown>> = {
 	children: (props: ChildrenProps<FormValues>) => JSX.Element;
 };
 
-const Field = <FormValue extends Record<string, unknown>>({
+const ControlledField = <FormValue extends Record<string, unknown>>({
 	label,
 	name,
 	children,
 }: Props<FormValue>) => {
 	const id = useId();
-	const { register } = useFormContext<FormValue>();
+	const { control } = useFormContext<FormValue>();
 
 	// prevent the default behavior of the form when the field is invalid
 	const handleInvalid = (e) => {
@@ -29,9 +30,17 @@ const Field = <FormValue extends Record<string, unknown>>({
 	return (
 		<div>
 			<label htmlFor={id}>{label}</label>
-			<div>{children({ id, onInvalid: handleInvalid, ...register(name) })}</div>
+			<div>
+				<Controller
+					control={control}
+					name={name}
+					render={({ field }) =>
+						children({ id, onInvalid: handleInvalid, ...field })
+					}
+				/>
+			</div>
 		</div>
 	);
 };
 
-export { Field };
+export { ControlledField };
