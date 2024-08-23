@@ -6,7 +6,7 @@ type Props = {
 	label: string;
 };
 
-const Label: FC<Props> = ({ fieldId, label }) => (
+const FieldLabel: FC<Props> = ({ fieldId, label }) => (
 	<label htmlFor={fieldId} css={styles.label}>
 		{label}
 	</label>
@@ -14,10 +14,13 @@ const Label: FC<Props> = ({ fieldId, label }) => (
 
 const styles = {
 	label: css`
+	  display: inline-flex; /* for ::after */
 		font-size: 0.8rem;
 		font-weight: bold;
+		align-items: center;
     color: #333;
+		gap: 4px;
 	`,
 };
 
-export { Label };
+export { FieldLabel };

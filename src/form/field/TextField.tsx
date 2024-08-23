@@ -4,6 +4,7 @@ import { css } from "@emotion/react";
 type Props = {
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
+	isvalid?: boolean;
 } & Omit<JSX.IntrinsicElements["input"], "type" | "children">;
 
 const TextField = forwardRef<HTMLInputElement, Props>(
@@ -18,6 +19,8 @@ const TextField = forwardRef<HTMLInputElement, Props>(
 					onBlur(e);
 				}}
 				{...props}
+				aria-invalid={props.isvalid ? undefined : true}
+				aria-errormessage={props.isvalid ? undefined : `${props.id}_error`}
 				css={style}
 			/>
 		);
@@ -26,7 +29,8 @@ const TextField = forwardRef<HTMLInputElement, Props>(
 
 const style = css`
 	flex-grow: 1;
-  &:invalid {
+
+  &[aria-invalid="true"] {
     border: 1px solid red;
 		background-color: #ffcccc;
   }

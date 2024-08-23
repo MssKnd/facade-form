@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { FormProvider, type UseFormReturn, type Path } from "react-hook-form";
 import type { FC, PropsWithChildren } from "react";
-import type { Option } from "./SelectField";
+import type { Option } from "./field/SelectField";
 
 type Props<FieldValues extends Record<string, unknown>> = {
 	id: string;
@@ -13,8 +13,8 @@ type BaseFieldProps<FormValues extends Record<string, unknown>> = {
 	label: string;
 	name: Path<FormValues>;
 	required?: boolean;
-	readonly?: boolean;
 	disabled?: boolean;
+	errorMessage?: string;
 };
 
 interface Form<FormValues extends Record<string, unknown>>
@@ -22,6 +22,9 @@ interface Form<FormValues extends Record<string, unknown>>
 	Field: {
 		Text: FC<BaseFieldProps<FormValues>>;
 		Select: FC<BaseFieldProps<FormValues> & { options: Option[] }>;
+	};
+	ArrayField: {
+		Text: FC<BaseFieldProps<FormValues>>;
 	};
 	Button: {
 		Submit: FC<{ label: string }>;
@@ -35,7 +38,7 @@ const createForm = <FieldValues extends Record<string, any>>(
 ): Form<FieldValues> => {
 	const Form = ({ children }: PropsWithChildren) => (
 		<FormProvider {...methods}>
-			<form id={id} onSubmit={onSubmit} css={style}>
+			<form id={id} onSubmit={onSubmit} css={style} noValidate>
 				{children}
 			</form>
 		</FormProvider>
