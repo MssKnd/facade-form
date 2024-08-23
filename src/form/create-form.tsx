@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { FormProvider, type UseFormReturn, type Path } from "react-hook-form";
 import type { FC, PropsWithChildren } from "react";
-import type { Option } from "./field/SelectField";
+import type { Option } from "./fields/SelectField";
 
 type Props<FieldValues extends Record<string, unknown>> = {
 	id: string;
@@ -29,12 +29,19 @@ interface Form<FormValues extends Record<string, unknown>>
 	Button: {
 		Submit: FC<{ label: string }>;
 	};
+	Header: FC<PropsWithChildren>;
+	Body: FC<PropsWithChildren>;
+	Footer: FC<PropsWithChildren>;
 }
 
 const createForm = <FieldValues extends Record<string, any>>(
 	{ id, methods, onSubmit }: Props<FieldValues>,
-	fields: Form<FieldValues>["Field"],
-	buttons: Form<FieldValues>["Button"],
+	compornents: {
+		fields: Form<FieldValues>["Field"];
+		buttons: Form<FieldValues>["Button"];
+		body: Form<FieldValues>["Body"];
+		footer: Form<FieldValues>["Footer"];
+	},
 ): Form<FieldValues> => {
 	const Form = ({ children }: PropsWithChildren) => (
 		<FormProvider {...methods}>
@@ -44,15 +51,17 @@ const createForm = <FieldValues extends Record<string, any>>(
 		</FormProvider>
 	);
 
-	Form.Field = fields;
-	Form.Button = buttons;
+	Form.Field = compornents.fields;
+	Form.Button = compornents.buttons;
+	Form.Body = compornents.body;
+	Form.Footer = compornents.footer;
 
 	return Form as Form<FieldValues>;
 };
 
 const style = css`
 	display: grid;
-	gap: 16px;
+	gap: 24px;
 `;
 
 export { createForm, type BaseFieldProps };

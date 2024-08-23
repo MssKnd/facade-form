@@ -4,11 +4,12 @@ import type { DefaultValues, FieldErrors, Path } from "react-hook-form";
 import { createForm, type BaseFieldProps } from "./create-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { ObjectSchema } from "yup";
-import { Field } from "./field/Field.tsx";
-import { TextField } from "./field/TextField.tsx";
+import { Field } from "./fields/Field.tsx";
+import { TextField } from "./fields/TextField.tsx";
 import { SubmitButton } from "./SubmitButton.tsx";
-import { ControlledField } from "./field/ControledField.tsx";
-import { SelectField, type Option } from "./field/SelectField.tsx";
+import { ControlledField } from "./fields/ControledField.tsx";
+import { SelectField, type Option } from "./fields/SelectField.tsx";
+import { FormBody } from "./layouts/FormBody.tsx";
 
 type Props<Values extends Record<string, unknown>> = {
 	schema: ObjectSchema<Values>;
@@ -40,36 +41,37 @@ const useForm = <Values extends Record<string, unknown>>({
 	const Form = createForm(
 		{ id, methods, onSubmit: handleSubmit },
 		{
-			Text: ({ ...props }: Omit<BaseFieldProps<Values>, "errorMessage">) => (
-				<Field<Values>
-					{...props}
-					errorMessage={getErrorMessage(props.name, errors)}
-				>
-					{(props) => <TextField {...props} />}
-				</Field>
-			),
-			Select: ({
-				options,
-				...props
-			}: BaseFieldProps<Values> & { options: Option[] }) => (
-				<ControlledField<Values> {...props}>
-					{({ value, ref: _, ...props }) => (
-						<SelectField value={String(value)} {...props} options={options} />
-					)}
-				</ControlledField>
-			),
-		},
-		{
-			Submit: (props) => <SubmitButton id={id} {...props} />,
+			fields: {
+				Text: ({ ...props }: Omit<BaseFieldProps<Values>, "errorMessage">) => (
+					<Field<Values>
+						{...props}
+						errorMessage={getErrorMessage(props.name, errors)}
+					>
+						{(props) => <TextField {...props} />}
+					</Field>
+				),
+				Select: ({
+					options,
+					...props
+				}: BaseFieldProps<Values> & { options: Option[] }) => (
+					<ControlledField<Values> {...props}>
+						{({ value, ref: _, ...props }) => (
+							<SelectField value={String(value)} {...props} options={options} />
+						)}
+					</ControlledField>
+				),
+			},
+			buttons: {
+				Submit: (props) => <SubmitButton id={id} {...props} />,
+			},
+			body: ({ children }) => <FormBody>{children}</FormBody>,
+			footer: ({ children }) => <footer>{children}</footer>,
 		},
 	);
 
 	return {
 		formValues,
 		Form,
-		// ArrayField: {
-		// 	Text: () => {},
-		// },
 	};
 };
 

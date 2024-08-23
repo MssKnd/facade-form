@@ -6,7 +6,7 @@ import {
 	type Path,
 } from "react-hook-form";
 import type { BaseFieldProps } from "../create-form.tsx";
-import { BaseField } from "./BaseField";
+import { BaseField } from "./BaseField.tsx";
 
 type ChildrenProps<FormValues extends Record<string, unknown>> = {
 	id: string;

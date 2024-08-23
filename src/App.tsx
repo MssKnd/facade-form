@@ -20,10 +20,14 @@ export default function App() {
 	return (
 		<div className="App">
 			<Form>
-				<Form.Field.Text label="Name" name="name" required />
-				<Form.Field.Text label="Nickame" name="nickname" />
-				<Form.Field.Select label="Type" name="type" options={USER_TYPE_OPTIONS} />
-			  <Form.Button.Submit label="Submit" />
+				<Form.Body>
+					<Form.Field.Text label="Name" name="name" required />
+					<Form.Field.Text label="Nickame" name="nickname" />
+					<Form.Field.Select label="Type" name="type" options={USER_TYPE_OPTIONS} />
+				</Form.Body>
+				<Form.Footer>
+			  	<Form.Button.Submit label="Submit" />
+				</Form.Footer>
 			</Form>
 		</div>
 	);
