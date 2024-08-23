@@ -1,6 +1,6 @@
+import { css } from "@emotion/react";
+import { FormProvider, type UseFormReturn, type Path } from "react-hook-form";
 import type { FC, PropsWithChildren } from "react";
-import { FormProvider } from "react-hook-form";
-import type { UseFormReturn, Path } from "react-hook-form";
 import type { Option } from "./SelectField";
 
 type Props<FieldValues extends Record<string, unknown>> = {
@@ -9,11 +9,19 @@ type Props<FieldValues extends Record<string, unknown>> = {
 	onSubmit: () => void;
 };
 
+type BaseFieldProps<FormValues extends Record<string, unknown>> = {
+	label: string;
+	name: Path<FormValues>;
+	required?: boolean;
+	readonly?: boolean;
+	disabled?: boolean;
+};
+
 interface Form<FormValues extends Record<string, unknown>>
 	extends FC<PropsWithChildren> {
 	Field: {
-		Text: FC<{ label: string; name: Path<FormValues> }>;
-		Select: FC<{ label: string; name: Path<FormValues>; options: Option[] }>;
+		Text: FC<BaseFieldProps<FormValues>>;
+		Select: FC<BaseFieldProps<FormValues> & { options: Option[] }>;
 	};
 	Button: {
 		Submit: FC<{ label: string }>;
@@ -27,7 +35,7 @@ const createForm = <FieldValues extends Record<string, any>>(
 ): Form<FieldValues> => {
 	const Form = ({ children }: PropsWithChildren) => (
 		<FormProvider {...methods}>
-			<form id={id} onSubmit={onSubmit} noValidate>
+			<form id={id} onSubmit={onSubmit} css={style}>
 				{children}
 			</form>
 		</FormProvider>
@@ -39,4 +47,9 @@ const createForm = <FieldValues extends Record<string, any>>(
 	return Form as Form<FieldValues>;
 };
 
-export { createForm };
+const style = css`
+	display: grid;
+	gap: 16px;
+`;
+
+export { createForm, type BaseFieldProps };

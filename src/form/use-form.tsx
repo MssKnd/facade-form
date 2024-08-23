@@ -1,15 +1,14 @@
 import { useId } from "react";
 import { useForm as useRHForm } from "react-hook-form";
 import type { DefaultValues, FieldErrors, Path } from "react-hook-form";
-import { createForm } from "./create-form";
+import { createForm, type BaseFieldProps } from "./create-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { ObjectSchema } from "yup";
 import { Field } from "./Field.tsx";
 import { TextField } from "./TextField.tsx";
 import { SubmitButton } from "./SubmitButton.tsx";
 import { ControlledField } from "./ControledField.tsx";
-import { SelectField } from "./SelectField.tsx";
-import type { Option } from "./SelectField.tsx";
+import { SelectField, type Option } from "./SelectField.tsx";
 
 type Props<Values extends Record<string, unknown>> = {
 	schema: ObjectSchema<Values>;
@@ -32,24 +31,23 @@ const useForm = <Values extends Record<string, unknown>>({
 		resolver: yupResolver(schema),
 		shouldUseNativeValidation: true,
 	});
-	// const formValues = methods.watch();
+	const formValues = methods.watch();
 	const handleSubmit = methods.handleSubmit(onSubmit, onInvalidError);
 
 	const Form = createForm(
 		{ id, methods, onSubmit: handleSubmit },
 		{
-			Text: ({ label, name }: { label: string; name: Path<Values> }) => (
-				<Field label={label} name={name}>
-					{(props) => <TextField {...props} />}
-				</Field>
+			Text: ({ ...props }: BaseFieldProps<Values>) => (
+				<Field<Values> {...props}>{(props) => <TextField {...props} />}</Field>
 			),
 			Select: ({
-				label,
-				name,
 				options,
-			}: { label: string; name: Path<Values>; options: Option[] }) => (
-				<ControlledField label={label} name={name}>
-					{(props) => <SelectField {...props} options={options} />}
+				...props
+			}: BaseFieldProps<Values> & { options: Option[] }) => (
+				<ControlledField<Values> {...props}>
+					{({ value, ...props }) => (
+						<SelectField value={String(value)} {...props} options={options} />
+					)}
 				</ControlledField>
 			),
 		},
@@ -59,12 +57,11 @@ const useForm = <Values extends Record<string, unknown>>({
 	);
 
 	return {
-		// formValues,
+		formValues,
 		Form,
 		// ArrayField: {
 		// 	Text: () => {},
 		// },
-		// SubmitButton: () => <></>,
 	};
 };
 

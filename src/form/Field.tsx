@@ -1,6 +1,11 @@
-import { useFormContext } from "react-hook-form";
-import type { Path, UseFormRegisterReturn } from "react-hook-form";
-import { FormEvent, useId } from "react";
+import { type FormEvent, useId } from "react";
+import { css } from "@emotion/react";
+import {
+	useFormContext,
+	type Path,
+	type UseFormRegisterReturn,
+} from "react-hook-form";
+import { Label } from "./Label";
 
 type ChildrenProps<FormValues extends Record<string, unknown>> = {
 	id: string;
@@ -19,19 +24,35 @@ const Field = <FormValue extends Record<string, unknown>>({
 	children,
 }: Props<FormValue>) => {
 	const id = useId();
-	const { register } = useFormContext<FormValue>();
+	const { register, getFieldState } = useFormContext<FormValue>();
+	const test = getFieldState(name);
 
 	// prevent the default behavior of the form when the field is invalid
-	const handleInvalid = (e) => {
+	const handleInvalid = (e: FormEvent) => {
 		e.preventDefault();
 	};
 
 	return (
-		<div>
-			<label htmlFor={id}>{label}</label>
-			<div>{children({ id, onInvalid: handleInvalid, ...register(name) })}</div>
+		<div css={styles.container}>
+			<div>
+				<Label fieldId={id} label={label} />
+			</div>
+			<div css={styles.fieldContainer}>
+				{children({ id, onInvalid: handleInvalid, ...register(name) })}
+			</div>
 		</div>
 	);
+};
+
+const styles = {
+	container: css`
+		display: grid;
+		grid-template-rows: min-content 1fr;
+		gap: 4px;
+	`,
+	fieldContainer: css`
+		display: flex;
+	`,
 };
 
 export { Field };

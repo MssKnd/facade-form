@@ -3,7 +3,7 @@ import { useForm } from './form/use-form'
 
 export default function App() {
 	const defaultValues = profileSchema.getDefault();
-	const { Form } = useForm({
+	const { Form, formValues } = useForm({
 		schema: profileSchema,
 		defaultValues,
 		onSubmit: (values) => {
@@ -15,21 +15,23 @@ export default function App() {
 		isMutating: false,
 	});
 
-	// console.log({formValues});
+	console.log({formValues});
 
 	return (
 		<div className="App">
 			<Form>
-				<Form.Field.Text label="Name" name="name" />
-				<Form.Field.Select label="Type" name="type" options={[{
-					label: "Admin",
-					value: "admin",
-				}, {
-					label: "User",
-					value: "user",
-				}]} />
+				<Form.Field.Text label="Name" name="name" required />
+				<Form.Field.Select label="Type" name="type" options={USER_TYPE_OPTIONS} />
 			  <Form.Button.Submit label="Submit" />
 			</Form>
 		</div>
 	);
 }
+
+const USER_TYPE_OPTIONS = [{
+	label: "Admin",
+	value: "admin",
+}, {
+	label: "User",
+	value: "user",
+}]
