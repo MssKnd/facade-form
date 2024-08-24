@@ -7,6 +7,7 @@ import {
 } from "react-hook-form";
 import type { BaseFieldProps } from "../create-form.tsx";
 import { BaseField } from "./BaseField.tsx";
+import { css } from "@emotion/react";
 
 type ChildrenProps<FormValues extends Record<string, unknown>> = {
 	id: string;
@@ -30,16 +31,22 @@ const ControlledField = <FormValue extends Record<string, unknown>>({
 	return (
 		<BaseField label={label} errorMessage={errorMessage}>
 			{(props) => (
-				<Controller
-					control={control}
-					name={name}
-					render={({ field }) =>
-						children({ ...props, ...fieldProps, ...field })
-					}
-				/>
+				<div css={style}>
+					<Controller
+						control={control}
+						name={name}
+						render={({ field }) =>
+							children({ ...props, ...fieldProps, ...field })
+						}
+					/>
+				</div>
 			)}
 		</BaseField>
 	);
 };
+
+const style = css`
+		display: flex;
+	`;
 
 export { ControlledField };

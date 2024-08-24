@@ -8,19 +8,19 @@ type Props = {
 } & Omit<JSX.IntrinsicElements["input"], "type" | "children">;
 
 const TextField = forwardRef<HTMLInputElement, Props>(
-	({ onChange, onBlur, ...props }, ref) => {
+	({ onChange, onBlur, isvalid, ...props }, ref) => {
 		return (
 			<input
 				type="text"
 				ref={ref}
-				onChange={undefined}
+				onChange={onChange}
 				onBlur={(e) => {
-					onChange(e);
+					// onChange(e);
 					onBlur(e);
 				}}
 				{...props}
-				aria-invalid={props.isvalid ? undefined : true}
-				aria-errormessage={props.isvalid ? undefined : `${props.id}_error`}
+				aria-invalid={isvalid ? undefined : true}
+				aria-errormessage={isvalid ? undefined : `${props.id}_error`}
 				css={style}
 			/>
 		);

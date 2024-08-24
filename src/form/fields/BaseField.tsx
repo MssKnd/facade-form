@@ -1,4 +1,4 @@
-import { type FormEvent, useId } from "react";
+import { type FormEvent, memo, useId } from "react";
 import { css } from "@emotion/react";
 import { FieldLabel } from "./FieldLabel";
 import type { BaseFieldProps } from "../create-form";
@@ -12,39 +12,39 @@ type Props<FormValues extends Record<string, unknown>> = Pick<
 	BaseFieldProps<FormValues>,
 	"label" | "errorMessage"
 > & {
-	children: (props: ChildrenProps) => JSX.Element;
+	children: (props: ChildrenProps) => JSX.Element | JSX.Element[];
 };
 
-const BaseField = <FormValue extends Record<string, unknown>>({
-	label,
-	// If there is an error message, it should be re-rendered, so receive errorMessage in Props
-	errorMessage,
-	children,
-}: Props<FormValue>) => {
-	const id = useId();
+const BaseField = memo(
+	<FormValue extends Record<string, unknown>>({
+		label,
+		// If there is an error message, it should be re-rendered, so receive errorMessage in Props
+		errorMessage,
+		children,
+	}: Props<FormValue>) => {
+		const id = useId();
 
-	// prevent the default behavior of the form when the field is invalid
-	const handleInvalid = (e: FormEvent) => e.preventDefault();
+		// prevent the default behavior of the form when the field is invalid
+		const handleInvalid = (e: FormEvent) => e.preventDefault();
 
-	return (
-		<div css={styles.container}>
-			<div css={styles.labelContainer}>
-				<FieldLabel fieldId={id} label={label} />
-				{errorMessage && (
-					<span id={`${id}_error`} css={styles.error}>
-						{errorMessage}
-					</span>
-				)}
-			</div>
-			<div css={styles.fieldContainer}>
+		return (
+			<div css={styles.container}>
+				<div css={styles.labelContainer}>
+					<FieldLabel fieldId={id} label={label} />
+					{errorMessage && (
+						<span id={`${id}_error`} css={styles.error}>
+							{errorMessage}
+						</span>
+					)}
+				</div>
 				{children({
 					id,
 					onInvalid: handleInvalid,
 				})}
 			</div>
-		</div>
-	);
-};
+		);
+	},
+);
 
 const styles = {
 	container: css`
@@ -67,9 +67,6 @@ const styles = {
 	error: css`
 		font-size: 0.8rem;
 		color: red;
-	`,
-	fieldContainer: css`
-		display: flex;
 	`,
 };
 

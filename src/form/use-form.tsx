@@ -10,6 +10,7 @@ import { SubmitButton } from "./SubmitButton.tsx";
 import { ControlledField } from "./fields/ControledField.tsx";
 import { SelectField, type Option } from "./fields/SelectField.tsx";
 import { FormBody } from "./layouts/FormBody.tsx";
+import { ArrayField } from "./fields/ArrayField.tsx";
 
 type Props<Values extends Record<string, unknown>> = {
 	schema: ObjectSchema<Values>;
@@ -34,7 +35,6 @@ const useForm = <Values extends Record<string, unknown>>({
 		reValidateMode: "onBlur",
 		shouldUseNativeValidation: true,
 	});
-	const formValues = methods.watch();
 	const errors = methods.formState.errors;
 	const handleSubmit = methods.handleSubmit(onSubmit, onInvalidError);
 
@@ -43,10 +43,7 @@ const useForm = <Values extends Record<string, unknown>>({
 		{
 			fields: {
 				Text: ({ ...props }: Omit<BaseFieldProps<Values>, "errorMessage">) => (
-					<Field<Values>
-						{...props}
-						errorMessage={getErrorMessage(props.name, errors)}
-					>
+					<Field {...props} errorMessage={getErrorMessage(props.name, errors)}>
 						{(props) => <TextField {...props} />}
 					</Field>
 				),
@@ -54,11 +51,21 @@ const useForm = <Values extends Record<string, unknown>>({
 					options,
 					...props
 				}: BaseFieldProps<Values> & { options: Option[] }) => (
-					<ControlledField<Values> {...props}>
+					<ControlledField {...props}>
 						{({ value, ref: _, ...props }) => (
 							<SelectField value={String(value)} {...props} options={options} />
 						)}
 					</ControlledField>
+				),
+			},
+			arrayFields: {
+				Text: ({ ...props }: Omit<BaseFieldProps<Values>, "errorMessage">) => (
+					<ArrayField
+						{...props}
+						errorMessage={getErrorMessage(props.name, errors)}
+					>
+						{(props) => <TextField {...props} />}
+					</ArrayField>
 				),
 			},
 			buttons: {
@@ -70,7 +77,7 @@ const useForm = <Values extends Record<string, unknown>>({
 	);
 
 	return {
-		formValues,
+		formValues: {},
 		Form,
 	};
 };

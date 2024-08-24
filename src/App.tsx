@@ -1,9 +1,10 @@
 import { profileSchema } from './schema'
 import { useForm } from './form/use-form'
+import { FieldValueGuard } from './form/FieldValueGuard';
 
 export default function App() {
 	const defaultValues = profileSchema.getDefault();
-	const { Form, formValues } = useForm({
+	const { Form } = useForm({
 		schema: profileSchema,
 		defaultValues,
 		onSubmit: (values) => {
@@ -15,8 +16,6 @@ export default function App() {
 		isMutating: false,
 	});
 
-	console.log({formValues});
-
 	return (
 		<div className="App">
 			<Form>
@@ -24,6 +23,10 @@ export default function App() {
 					<Form.Field.Text label="Name" name="name" required />
 					<Form.Field.Text label="Nickame" name="nickname" />
 					<Form.Field.Select label="Type" name="type" options={USER_TYPE_OPTIONS} />
+					<Form.ArrayField.Text label="Tags" name="tags" />
+					<FieldValueGuard value='aaaa' name="nickname" >
+						test
+					</FieldValueGuard>
 				</Form.Body>
 				<Form.Footer>
 			  	<Form.Button.Submit label="Submit" />

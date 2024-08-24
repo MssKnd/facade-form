@@ -38,6 +38,7 @@ const createForm = <FieldValues extends Record<string, any>>(
 	{ id, methods, onSubmit }: Props<FieldValues>,
 	compornents: {
 		fields: Form<FieldValues>["Field"];
+		arrayFields: Form<FieldValues>["ArrayField"];
 		buttons: Form<FieldValues>["Button"];
 		body: Form<FieldValues>["Body"];
 		footer: Form<FieldValues>["Footer"];
@@ -52,6 +53,7 @@ const createForm = <FieldValues extends Record<string, any>>(
 	);
 
 	Form.Field = compornents.fields;
+	Form.ArrayField = compornents.arrayFields;
 	Form.Button = compornents.buttons;
 	Form.Body = compornents.body;
 	Form.Footer = compornents.footer;
