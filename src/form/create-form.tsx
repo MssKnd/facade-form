@@ -1,38 +1,43 @@
 import { css } from "@emotion/react";
 import { FormProvider, type UseFormReturn, type Path } from "react-hook-form";
 import type { FC, PropsWithChildren } from "react";
-import type { Option } from "./fields/SelectField";
+import type { SelectOptions } from "./fields/SelectField";
+import type { FormValues } from "./types";
+import type { ArrayFieldDefaultValue } from "./fields/ArrayField";
 
-type Props<FieldValues extends Record<string, unknown>> = {
+type Props<Values extends FormValues> = {
 	id: string;
-	methods: UseFormReturn<FieldValues, any, undefined>;
+	methods: UseFormReturn<Values, any, undefined>;
 	onSubmit: () => void;
 };
 
-type BaseFieldProps<FormValues extends Record<string, unknown>> = {
+type FieldProps<Values extends FormValues> = {
 	label: string;
-	name: Path<FormValues>;
+	name: Path<Values>;
 	required?: boolean;
 	disabled?: boolean;
-	errorMessage?: string;
 };
 
-interface Form<FormValues extends Record<string, unknown>>
-	extends FC<PropsWithChildren> {
+type FieldErrorMessage = { errorMessage?: string };
+
+type BaseFieldProps<Values extends FormValues> = FieldProps<Values> &
+	FieldErrorMessage;
+
+interface Form<Values extends FormValues> extends FC<PropsWithChildren> {
 	Field: {
-		Text: FC<BaseFieldProps<FormValues>>;
-		Select: FC<BaseFieldProps<FormValues> & { options: Option[] }>;
+		Text: FC<BaseFieldProps<Values>>;
+		Select: FC<BaseFieldProps<Values> & SelectOptions>;
 	};
 	ArrayField: {
-		Text: FC<BaseFieldProps<FormValues> & { name: Path<FormValues> }>;
+		Text: FC<BaseFieldProps<Values> & ArrayFieldDefaultValue<Values>>;
 	};
 	Button: {
 		Submit: FC<{ label: string }>;
 	};
 	Guard: FC<
 		PropsWithChildren<{
-			name: Path<FormValues>;
-			value: FormValues[Path<FormValues>];
+			name: Path<Values>;
+			value: Values[Path<Values>];
 		}>
 	>;
 	Header: FC<PropsWithChildren>;
@@ -40,17 +45,17 @@ interface Form<FormValues extends Record<string, unknown>>
 	Footer: FC<PropsWithChildren>;
 }
 
-const createForm = <FieldValues extends Record<string, any>>(
-	{ id, methods, onSubmit }: Props<FieldValues>,
+const createForm = <Values extends Record<string, any>>(
+	{ id, methods, onSubmit }: Props<Values>,
 	compornents: {
-		fields: Form<FieldValues>["Field"];
-		arrayFields: Form<FieldValues>["ArrayField"];
-		buttons: Form<FieldValues>["Button"];
-		guard: Form<FieldValues>["Guard"];
-		body: Form<FieldValues>["Body"];
-		footer: Form<FieldValues>["Footer"];
+		fields: Form<Values>["Field"];
+		arrayFields: Form<Values>["ArrayField"];
+		buttons: Form<Values>["Button"];
+		guard: Form<Values>["Guard"];
+		body: Form<Values>["Body"];
+		footer: Form<Values>["Footer"];
 	},
-): Form<FieldValues> => {
+): Form<Values> => {
 	const Form = ({ children }: PropsWithChildren) => (
 		<FormProvider {...methods}>
 			<form id={id} onSubmit={onSubmit} css={style} noValidate>
@@ -66,7 +71,7 @@ const createForm = <FieldValues extends Record<string, any>>(
 	Form.Body = compornents.body;
 	Form.Footer = compornents.footer;
 
-	return Form as Form<FieldValues>;
+	return Form as Form<Values>;
 };
 
 const style = css`
@@ -74,4 +79,4 @@ const style = css`
 	gap: 24px;
 `;
 
-export { createForm, type BaseFieldProps };
+export { createForm, type BaseFieldProps, type FieldProps };

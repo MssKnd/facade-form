@@ -3,13 +3,16 @@ import Select from "react-select";
 
 type Option = { value: string; label: string };
 
+type SelectOptions = {
+	options: Option[];
+};
+
 type Props = {
 	value: string;
-	options: Option[];
 	onChange: (value: string | undefined) => void;
 	onBlur: () => void;
 	disabled?: boolean;
-};
+} & SelectOptions;
 
 const SelectField: FC<Props> = ({
 	value,
@@ -36,4 +39,4 @@ const SelectField: FC<Props> = ({
 };
 
 export { SelectField };
-export type { Option };
+export type { Option, SelectOptions };

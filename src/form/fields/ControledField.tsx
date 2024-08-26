@@ -4,18 +4,14 @@ import {
 	Controller,
 	type ControllerRenderProps,
 	type Path,
-	type Control,
 } from "react-hook-form";
 import type { BaseFieldProps } from "../create-form.tsx";
-import { BaseField } from "./BaseField.tsx";
+import { BaseField, type BaseChildrenProps } from "./BaseField.tsx";
 import { css } from "@emotion/react";
 import type { FormValues } from "../types.ts";
 
-type ChildrenProps<Values extends FormValues> = {
-	id: string;
-	isvalid: boolean;
-	onInvalid: (event: FormEvent) => void;
-} & ControllerRenderProps<Values, Path<Values>>;
+type ChildrenProps<Values extends FormValues> = BaseChildrenProps &
+	ControllerRenderProps<Values, Path<Values>>;
 
 type Props<Values extends FormValues> = BaseFieldProps<Values> & {
 	children: (props: ChildrenProps<Values>) => JSX.Element;
@@ -42,7 +38,6 @@ const ControlledField = <FormValue extends FormValues>({
 								...props,
 								...fieldProps,
 								...field,
-								isvalid: errorMessage == null,
 							})
 						}
 					/>

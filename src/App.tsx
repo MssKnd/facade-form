@@ -22,7 +22,7 @@ export default function App() {
 					<Form.Field.Text label="Name" name="name" required />
 					<Form.Field.Text label="Nickame" name="nickname" />
 					<Form.Field.Select label="Type" name="type" options={USER_TYPE_OPTIONS} />
-					<Form.ArrayField.Text label="Tags" name="tags" />
+					<Form.ArrayField.Text label="Tags" name="tags" defaultValue='' />
 					<Form.Guard value='aaaa' name="name" >
 						test
 					</Form.Guard>

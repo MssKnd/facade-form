@@ -3,8 +3,9 @@ import { css } from "@emotion/react";
 import { FieldLabel } from "./FieldLabel";
 import type { BaseFieldProps } from "../create-form";
 
-type ChildrenProps = {
+type BaseChildrenProps = {
 	id: string;
+	isvalid: boolean;
 	onInvalid: (event: FormEvent) => void;
 };
 
@@ -12,7 +13,7 @@ type Props<FormValues extends Record<string, unknown>> = Pick<
 	BaseFieldProps<FormValues>,
 	"label" | "errorMessage"
 > & {
-	children: (props: ChildrenProps) => JSX.Element | JSX.Element[];
+	children: (props: BaseChildrenProps) => JSX.Element | JSX.Element[];
 };
 
 const BaseField = memo(
@@ -39,6 +40,7 @@ const BaseField = memo(
 				</div>
 				{children({
 					id,
+					isvalid: errorMessage == null,
 					onInvalid: handleInvalid,
 				})}
 			</div>
@@ -70,4 +72,4 @@ const styles = {
 	`,
 };
 
-export { BaseField };
+export { BaseField, type BaseChildrenProps };

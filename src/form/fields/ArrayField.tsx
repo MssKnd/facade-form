@@ -1,35 +1,39 @@
-import { Fragment, memo, type FormEvent } from "react";
 import {
 	useFieldArray,
 	useFormContext,
 	type ArrayPath,
+	type FieldArray,
+	type FieldValues,
 	type Path,
 	type UseFormRegisterReturn,
 } from "react-hook-form";
 import type { BaseFieldProps } from "../create-form";
-import { BaseField } from "./BaseField";
+import { BaseField, type BaseChildrenProps } from "./BaseField";
 import { css } from "@emotion/react";
 import type { FormValues } from "../types";
 
-type ChildrenProps<Values extends FormValues> = {
-	id: string;
-	isvalid: boolean;
-	onInvalid: (event: FormEvent) => void;
-} & UseFormRegisterReturn<Path<Values>>;
+type ChildrenProps<Values extends FormValues> = BaseChildrenProps &
+	UseFormRegisterReturn<Path<Values>>;
 
-type Props<Values extends FormValues> = BaseFieldProps<Values> & {
-	children: (props: ChildrenProps<Values>) => JSX.Element;
+type ArrayFieldDefaultValue<Values extends FormValues> = {
+	defaultValue: FieldArray<FieldValues, ArrayPath<Values>>;
 };
+
+type Props<Values extends FormValues> = BaseFieldProps<Values> &
+	ArrayFieldDefaultValue<Values> & {
+		children: (props: ChildrenProps<Values>) => JSX.Element;
+	};
 
 const ArrayField = <Values extends FormValues>({
 	label,
 	name,
 	errorMessage,
+	defaultValue,
 	children,
 	...fieldProps
 }: Props<Values>) => {
 	const { register } = useFormContext<Values>();
-	const { fields } = useFieldArray({
+	const { fields, append, remove } = useFieldArray({
 		name: name as ArrayPath<Values>,
 	});
 
@@ -44,11 +48,27 @@ const ArrayField = <Values extends FormValues>({
 								...register(`${name}.${index}` as Path<Values>),
 								...props,
 								...fieldProps,
-								isvalid: errorMessage == null,
 							})}
-							<button type="button">x</button>
+							<button
+								type="button"
+								onClick={() => {
+									remove(index);
+								}}
+							>
+								x
+							</button>
 						</div>
 					))}
+					<div>
+						<button
+							type="button"
+							onClick={() => {
+								append(defaultValue);
+							}}
+						>
+							+
+						</button>
+					</div>
 				</div>
 			)}
 		</BaseField>
@@ -67,4 +87,4 @@ const styles = {
   `,
 };
 
-export { ArrayField };
+export { ArrayField, type ArrayFieldDefaultValue };
