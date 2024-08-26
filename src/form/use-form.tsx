@@ -1,19 +1,16 @@
-import { useCallback, useId, type PropsWithChildren } from "react";
+import { useCallback, useId } from "react";
 import { useForm as useRHForm } from "react-hook-form";
 import type { DefaultValues, FieldErrors, Path } from "react-hook-form";
-import { createForm, type FieldProps } from "./create-form";
+import { createForm } from "./create-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { ObjectSchema } from "yup";
 import { Field } from "./fields/Field.tsx";
 import { TextField } from "./fields/TextField.tsx";
 import { SubmitButton } from "./SubmitButton.tsx";
 import { ControlledField } from "./fields/ControledField.tsx";
-import { SelectField, type SelectOptions } from "./fields/SelectField.tsx";
+import { SelectField } from "./fields/SelectField.tsx";
 import { FormBody } from "./layouts/FormBody.tsx";
-import {
-	ArrayField,
-	type ArrayFieldDefaultValue,
-} from "./fields/ArrayField.tsx";
+import { ArrayField } from "./fields/ArrayField.tsx";
 import { FieldValueGuard } from "./FieldValueGuard.tsx";
 import type { FormValues } from "./types.ts";
 
@@ -48,7 +45,7 @@ const useForm = <Values extends FormValues>({
 			{ id, methods, onSubmit: handleSubmit },
 			{
 				fields: {
-					Text: ({ ...props }: FieldProps<Values>) => (
+					Text: ({ ...props }) => (
 						<Field
 							{...props}
 							errorMessage={getErrorMessage(props.name, errors)}
@@ -56,10 +53,7 @@ const useForm = <Values extends FormValues>({
 							{(props) => <TextField key={props.id} {...props} />}
 						</Field>
 					),
-					Select: ({
-						options,
-						...props
-					}: FieldProps<Values> & SelectOptions) => (
+					Select: ({ options, ...props }) => (
 						<ControlledField {...props}>
 							{({ value, ref: _, ...props }) => (
 								<SelectField
@@ -72,9 +66,7 @@ const useForm = <Values extends FormValues>({
 					),
 				},
 				arrayFields: {
-					Text: ({
-						...props
-					}: FieldProps<Values> & ArrayFieldDefaultValue<Values>) => (
+					Text: ({ ...props }) => (
 						<ArrayField
 							{...props}
 							errorMessage={getErrorMessage(props.name, errors)}
@@ -86,15 +78,8 @@ const useForm = <Values extends FormValues>({
 				buttons: {
 					Submit: (props) => <SubmitButton id={id} {...props} />,
 				},
-				guard: ({
-					value,
-					name,
-					children,
-				}: PropsWithChildren<{
-					name: Path<Values>;
-					value: Values[Path<Values>];
-				}>) => (
-					<FieldValueGuard value={value} name={name}>
+				guard: ({ allowValue, name, children }) => (
+					<FieldValueGuard allowValue={allowValue} name={name}>
 						{children}
 					</FieldValueGuard>
 				),
@@ -106,7 +91,6 @@ const useForm = <Values extends FormValues>({
 	);
 
 	return {
-		formValues: {},
 		Form,
 	};
 };

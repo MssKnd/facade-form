@@ -1,19 +1,20 @@
 import type { PropsWithChildren } from "react";
 import { useFormContext, type Path } from "react-hook-form";
+import type { FormValues } from "./types";
 
-type Props<FormValues extends Record<string, unknown>> = PropsWithChildren<{
-	name: Path<FormValues>;
-	value: FormValues[Path<FormValues>];
+type Props<Values extends FormValues> = PropsWithChildren<{
+	name: Path<Values>;
+	allowValue: Values[Path<Values>];
 }>;
 
-const FieldValueGuard = <FormValues extends Record<string, unknown>>({
+const FieldValueGuard = <Values extends FormValues>({
 	name,
-	value,
+	allowValue,
 	children,
-}: Props<FormValues>) => {
-	const { watch } = useFormContext<FormValues>();
+}: Props<Values>) => {
+	const { watch } = useFormContext<Values>();
 
-	if (watch(name) !== value) return null;
+	if (watch(name) !== allowValue) return null;
 
 	return <>{children}</>;
 };

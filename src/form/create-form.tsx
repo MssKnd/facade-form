@@ -1,9 +1,10 @@
 import { css } from "@emotion/react";
 import { FormProvider, type UseFormReturn, type Path } from "react-hook-form";
-import type { FC, PropsWithChildren } from "react";
+import type { ComponentProps, FC, PropsWithChildren } from "react";
 import type { SelectOptions } from "./fields/SelectField";
 import type { FormValues } from "./types";
 import type { ArrayFieldDefaultValue } from "./fields/ArrayField";
+import type { FieldValueGuard } from "./FieldValueGuard";
 
 type Props<Values extends FormValues> = {
 	id: string;
@@ -34,12 +35,7 @@ interface Form<Values extends FormValues> extends FC<PropsWithChildren> {
 	Button: {
 		Submit: FC<{ label: string }>;
 	};
-	Guard: FC<
-		PropsWithChildren<{
-			name: Path<Values>;
-			value: Values[Path<Values>];
-		}>
-	>;
+	Guard: FC<ComponentProps<typeof FieldValueGuard>>;
 	Header: FC<PropsWithChildren>;
 	Body: FC<PropsWithChildren>;
 	Footer: FC<PropsWithChildren>;
