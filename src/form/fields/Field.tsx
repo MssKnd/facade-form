@@ -7,26 +7,26 @@ import {
 import type { BaseFieldProps } from "../create-form";
 import { BaseField } from "./BaseField";
 import { css } from "@emotion/react";
+import type { FormValues } from "../types";
 
-type ChildrenProps<FormValues extends Record<string, unknown>> = {
+type ChildrenProps<Values extends FormValues> = {
 	id: string;
 	isvalid: boolean;
 	onInvalid: (event: FormEvent) => void;
-} & UseFormRegisterReturn<Path<FormValues>>;
+} & UseFormRegisterReturn<Path<Values>>;
 
-type Props<FormValues extends Record<string, unknown>> =
-	BaseFieldProps<FormValues> & {
-		children: (props: ChildrenProps<FormValues>) => JSX.Element;
-	};
+type Props<Values extends FormValues> = BaseFieldProps<Values> & {
+	children: (props: ChildrenProps<Values>) => JSX.Element;
+};
 
-const Field = <FormValue extends Record<string, unknown>>({
+const Field = <Values extends FormValues>({
 	label,
 	name,
 	errorMessage,
 	children,
 	...fieldProps
-}: Props<FormValue>) => {
-	const { register } = useFormContext<FormValue>();
+}: Props<Values>) => {
+	const { register } = useFormContext<Values>();
 
 	return (
 		<BaseField label={label} errorMessage={errorMessage}>

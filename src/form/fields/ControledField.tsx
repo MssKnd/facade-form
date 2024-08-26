@@ -9,19 +9,19 @@ import {
 import type { BaseFieldProps } from "../create-form.tsx";
 import { BaseField } from "./BaseField.tsx";
 import { css } from "@emotion/react";
+import type { FormValues } from "../types.ts";
 
-type ChildrenProps<FormValues extends Record<string, unknown>> = {
+type ChildrenProps<Values extends FormValues> = {
 	id: string;
 	isvalid: boolean;
 	onInvalid: (event: FormEvent) => void;
-} & ControllerRenderProps<FormValues, Path<FormValues>>;
+} & ControllerRenderProps<Values, Path<Values>>;
 
-type Props<FormValues extends Record<string, unknown>> =
-	BaseFieldProps<FormValues> & {
-		children: (props: ChildrenProps<FormValues>) => JSX.Element;
-	};
+type Props<Values extends FormValues> = BaseFieldProps<Values> & {
+	children: (props: ChildrenProps<Values>) => JSX.Element;
+};
 
-const ControlledField = <FormValue extends Record<string, unknown>>({
+const ControlledField = <FormValue extends FormValues>({
 	label,
 	name,
 	errorMessage,
