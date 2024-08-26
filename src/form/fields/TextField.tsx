@@ -1,21 +1,24 @@
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import { css } from "@emotion/react";
+import type { ChangeHandler } from "react-hook-form";
 
 type Props = {
-	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-	onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
+	onChange: ChangeHandler;
+	onBlur: ChangeHandler;
+	defaultValue?: string;
 	isvalid?: boolean;
 } & Omit<JSX.IntrinsicElements["input"], "type" | "children">;
 
 const TextField = forwardRef<HTMLInputElement, Props>(
-	({ onChange, onBlur, isvalid, ...props }, ref) => {
+	({ isvalid, onChange, onBlur, ...props }, ref) => {
 		return (
 			<input
+				key={props.id}
 				type="text"
 				ref={ref}
-				onChange={onChange}
+				onChange={undefined}
 				onBlur={(e) => {
-					// onChange(e);
+					onChange(e);
 					onBlur(e);
 				}}
 				{...props}

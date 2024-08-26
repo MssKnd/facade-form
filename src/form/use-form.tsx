@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, type ComponentProps, type PropsWithChildren } from "react";
 import { useForm as useRHForm } from "react-hook-form";
 import type { DefaultValues, FieldErrors, Path } from "react-hook-form";
 import { createForm, type BaseFieldProps } from "./create-form";
@@ -11,8 +11,10 @@ import { ControlledField } from "./fields/ControledField.tsx";
 import { SelectField, type Option } from "./fields/SelectField.tsx";
 import { FormBody } from "./layouts/FormBody.tsx";
 import { ArrayField } from "./fields/ArrayField.tsx";
+import { FieldValueGuard } from "./FieldValueGuard.tsx";
+import type { FormValues } from "./types.ts";
 
-type Props<Values extends Record<string, unknown>> = {
+type Props<Values extends FormValues> = {
 	schema: ObjectSchema<Values>;
 	defaultValues: DefaultValues<Values>;
 	onSubmit: (values: Values) => void;
@@ -20,14 +22,14 @@ type Props<Values extends Record<string, unknown>> = {
 	isMutating: boolean;
 };
 
-const useForm = <Values extends Record<string, unknown>>({
+const useForm = <Values extends FormValues>({
 	schema,
 	defaultValues,
 	onSubmit,
 	onInvalidError,
 }: Props<Values>) => {
 	const id = useId();
-	const methods = useRHForm({
+	const { ...methods } = useRHForm({
 		defaultValues,
 		// @ts-ignore
 		resolver: yupResolver(schema),
@@ -44,7 +46,7 @@ const useForm = <Values extends Record<string, unknown>>({
 			fields: {
 				Text: ({ ...props }: Omit<BaseFieldProps<Values>, "errorMessage">) => (
 					<Field {...props} errorMessage={getErrorMessage(props.name, errors)}>
-						{(props) => <TextField {...props} />}
+						{(props) => <TextField key={props.id} {...props} />}
 					</Field>
 				),
 				Select: ({
@@ -71,6 +73,18 @@ const useForm = <Values extends Record<string, unknown>>({
 			buttons: {
 				Submit: (props) => <SubmitButton id={id} {...props} />,
 			},
+			guard: ({
+				value,
+				name,
+				children,
+			}: PropsWithChildren<{
+				name: Path<Values>;
+				value: Values[Path<Values>];
+			}>) => (
+				<FieldValueGuard value={value} name={name}>
+					{children}
+				</FieldValueGuard>
+			),
 			body: ({ children }) => <FormBody>{children}</FormBody>,
 			footer: ({ children }) => <footer>{children}</footer>,
 		},

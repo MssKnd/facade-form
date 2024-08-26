@@ -24,11 +24,17 @@ interface Form<FormValues extends Record<string, unknown>>
 		Select: FC<BaseFieldProps<FormValues> & { options: Option[] }>;
 	};
 	ArrayField: {
-		Text: FC<BaseFieldProps<FormValues>>;
+		Text: FC<BaseFieldProps<FormValues> & { name: Path<FormValues> }>;
 	};
 	Button: {
 		Submit: FC<{ label: string }>;
 	};
+	Guard: FC<
+		PropsWithChildren<{
+			name: Path<FormValues>;
+			value: FormValues[Path<FormValues>];
+		}>
+	>;
 	Header: FC<PropsWithChildren>;
 	Body: FC<PropsWithChildren>;
 	Footer: FC<PropsWithChildren>;
@@ -40,6 +46,7 @@ const createForm = <FieldValues extends Record<string, any>>(
 		fields: Form<FieldValues>["Field"];
 		arrayFields: Form<FieldValues>["ArrayField"];
 		buttons: Form<FieldValues>["Button"];
+		guard: Form<FieldValues>["Guard"];
 		body: Form<FieldValues>["Body"];
 		footer: Form<FieldValues>["Footer"];
 	},
@@ -55,6 +62,7 @@ const createForm = <FieldValues extends Record<string, any>>(
 	Form.Field = compornents.fields;
 	Form.ArrayField = compornents.arrayFields;
 	Form.Button = compornents.buttons;
+	Form.Guard = compornents.guard;
 	Form.Body = compornents.body;
 	Form.Footer = compornents.footer;
 

@@ -4,6 +4,7 @@ import {
 	Controller,
 	type ControllerRenderProps,
 	type Path,
+	type Control,
 } from "react-hook-form";
 import type { BaseFieldProps } from "../create-form.tsx";
 import { BaseField } from "./BaseField.tsx";
@@ -11,6 +12,7 @@ import { css } from "@emotion/react";
 
 type ChildrenProps<FormValues extends Record<string, unknown>> = {
 	id: string;
+	isvalid: boolean;
 	onInvalid: (event: FormEvent) => void;
 } & ControllerRenderProps<FormValues, Path<FormValues>>;
 
@@ -36,7 +38,12 @@ const ControlledField = <FormValue extends Record<string, unknown>>({
 						control={control}
 						name={name}
 						render={({ field }) =>
-							children({ ...props, ...fieldProps, ...field })
+							children({
+								...props,
+								...fieldProps,
+								...field,
+								isvalid: errorMessage == null,
+							})
 						}
 					/>
 				</div>

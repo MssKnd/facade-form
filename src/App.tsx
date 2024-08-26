@@ -1,6 +1,5 @@
 import { profileSchema } from './schema'
 import { useForm } from './form/use-form'
-import { FieldValueGuard } from './form/FieldValueGuard';
 
 export default function App() {
 	const defaultValues = profileSchema.getDefault();
@@ -24,9 +23,9 @@ export default function App() {
 					<Form.Field.Text label="Nickame" name="nickname" />
 					<Form.Field.Select label="Type" name="type" options={USER_TYPE_OPTIONS} />
 					<Form.ArrayField.Text label="Tags" name="tags" />
-					<FieldValueGuard value='aaaa' name="nickname" >
+					<Form.Guard value='aaaa' name="name" >
 						test
-					</FieldValueGuard>
+					</Form.Guard>
 				</Form.Body>
 				<Form.Footer>
 			  	<Form.Button.Submit label="Submit" />
