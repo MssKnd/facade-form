@@ -8,6 +8,7 @@ type SelectOptions = {
 };
 
 type Props = {
+	id: string;
 	value: string;
 	onChange: (value: string | undefined) => void;
 	onBlur: () => void;
@@ -15,6 +16,7 @@ type Props = {
 } & SelectOptions;
 
 const SelectField: FC<Props> = ({
+	id,
 	value,
 	options,
 	onChange,
@@ -23,6 +25,7 @@ const SelectField: FC<Props> = ({
 }) => {
 	return (
 		<Select
+			inputId={id}
 			defaultValue={options.find((option) => option.value === value)}
 			options={options}
 			onChange={(option) => onChange(option?.value || "")}

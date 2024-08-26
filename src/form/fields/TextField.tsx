@@ -2,7 +2,6 @@ import { forwardRef } from "react";
 import { css } from "@emotion/react";
 
 type Props = {
-	defaultValue?: string;
 	isvalid?: boolean;
 } & Omit<JSX.IntrinsicElements["input"], "type" | "children">;
 
@@ -10,7 +9,6 @@ const TextField = forwardRef<HTMLInputElement, Props>(
 	({ isvalid, ...props }, ref) => {
 		return (
 			<input
-				key={props.id}
 				type="text"
 				ref={ref}
 				{...props}
