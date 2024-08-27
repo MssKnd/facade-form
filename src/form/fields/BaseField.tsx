@@ -54,11 +54,17 @@ const styles = {
 		grid-template-rows: min-content 1fr;
 		gap: 4px;
 
-		&:has(input:not(:required)) {
+		:has(input:not(:required)) {
 			label::after {
 				content: "optional";
 				font-weight: normal;
 				color: #aaa;
+			}
+		}
+
+		:has(input[aria-required]) {
+			label::after {
+				content: "";
 			}
 		}
 	`,
