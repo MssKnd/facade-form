@@ -5,6 +5,7 @@ import type { SelectOptions } from "./fields/SelectField";
 import type { FormValues } from "./types";
 import type { ArrayFieldDefaultValue } from "./fields/ArrayField";
 import type { FieldValueGuard } from "./FieldValueGuard";
+import type { RadioGroupOptions } from "./fields/RadioGroupField";
 
 type Props<Values extends FormValues> = {
 	id: string;
@@ -27,6 +28,7 @@ type BaseFieldProps<Values extends FormValues> = FieldProps<Values> &
 interface Form<Values extends FormValues> extends FC<PropsWithChildren> {
 	Field: {
 		Text: FC<BaseFieldProps<Values>>;
+		Radio: FC<BaseFieldProps<Values> & RadioGroupOptions>;
 		Select: FC<BaseFieldProps<Values> & SelectOptions>;
 	};
 	ArrayField: {
@@ -35,7 +37,7 @@ interface Form<Values extends FormValues> extends FC<PropsWithChildren> {
 	Button: {
 		Submit: FC<{ label: string }>;
 	};
-	Guard: FC<ComponentProps<typeof FieldValueGuard>>;
+	Guard: FC<ComponentProps<typeof FieldValueGuard<Values>>>;
 	Header: FC<PropsWithChildren>;
 	Body: FC<PropsWithChildren>;
 	Footer: FC<PropsWithChildren>;

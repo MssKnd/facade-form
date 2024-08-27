@@ -21,11 +21,12 @@ export default function App() {
 				<Form.Body>
 					<Form.Field.Text label="Name" name="name" required />
 					<Form.Field.Text label="Nickame" name="nickname" />
-					<Form.Field.Select label="Type" name="type" options={USER_TYPE_OPTIONS} />
-					<Form.ArrayField.Text label="Tags" name="tags" defaultValue='' />
-					<Form.Guard allowValue='aaaa' name="name" >
-						test
+					<Form.Field.Radio label="Type" name="type" options={USER_TYPE_OPTIONS} />
+					<Form.Guard allowValue='admin' name="type" >
+						Use this when you want to branch depending on the input value.
 					</Form.Guard>
+					<Form.Field.Select label="Language" name="language" options={LANGUAGE_TYPE_OPTIONS} />
+					<Form.ArrayField.Text label="Tags" name="tags" defaultValue='' />
 				</Form.Body>
 				<Form.Footer>
 			  	<Form.Button.Submit label="Submit" />
@@ -42,3 +43,14 @@ const USER_TYPE_OPTIONS = [{
 	label: "User",
 	value: "user",
 }]
+
+const LANGUAGE_TYPE_OPTIONS = [
+	{
+		label: "English",
+		value: "en",
+	},
+	{
+		label: "Japanese",
+		value: "ja",
+	},
+]

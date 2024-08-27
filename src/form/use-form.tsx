@@ -12,6 +12,7 @@ import { SelectField } from "./fields/SelectField.tsx";
 import { FormBody } from "./layouts/FormBody.tsx";
 import { ArrayField } from "./fields/ArrayField.tsx";
 import { FieldValueGuard } from "./FieldValueGuard.tsx";
+import { RadioGroupField } from "./fields/RadioGroupField.tsx";
 import type { FormValues } from "./types.ts";
 
 type Props<Values extends FormValues> = {
@@ -50,7 +51,21 @@ const useForm = <Values extends FormValues>({
 							{...props}
 							errorMessage={getErrorMessage(props.name, errors)}
 						>
-							{(props) => <TextField key={props.id} {...props} />}
+							{(props) => <TextField {...props} />}
+						</Field>
+					),
+					Radio: ({ options, ...props }) => (
+						<Field
+							{...props}
+							errorMessage={getErrorMessage(props.name, errors)}
+						>
+							{(props) => (
+								<RadioGroupField
+									{...props}
+									options={options}
+									defaultValue={defaultValues[props.name] as string}
+								/>
+							)}
 						</Field>
 					),
 					Select: ({ options, ...props }) => (
