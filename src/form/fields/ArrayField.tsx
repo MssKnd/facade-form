@@ -51,17 +51,19 @@ const ArrayField = <Values extends FormValues>({
 							})}
 							<button
 								type="button"
+								css={styles.button}
 								onClick={() => {
 									remove(index);
 								}}
 							>
-								x
+								-
 							</button>
 						</div>
 					))}
 					<div>
 						<button
 							type="button"
+							css={styles.button}
 							onClick={() => {
 								append(defaultValue);
 							}}
@@ -85,6 +87,10 @@ const styles = {
 		display: flex;
     gap: 4px;
   `,
+	button: css`
+		width: 34px;
+    height: 34px;
+	`,
 };
 
 export { ArrayField, type ArrayFieldDefaultValue };

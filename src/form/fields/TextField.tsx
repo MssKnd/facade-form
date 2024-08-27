@@ -23,6 +23,12 @@ const TextField = forwardRef<HTMLInputElement, Props>(
 const style = css`
 	flex-grow: 1;
 
+	height: 32px;
+	font-size: 1rem;
+	padding: 0 8px;
+	border: 1px solid hsl(0, 0%, 80%);
+	border-radius: 4px;
+
   &[aria-invalid="true"] {
     border: 1px solid red;
 		background-color: #ffcccc;
