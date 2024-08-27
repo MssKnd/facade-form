@@ -37,13 +37,13 @@ interface Form<Values extends FormValues> extends FC<PropsWithChildren> {
 	Button: {
 		Submit: FC<{ label: string }>;
 	};
-	Guard: FC<Omit<ComponentProps<typeof FieldValueGuard<Values>>, "watch">>;
+	Guard: FC<ComponentProps<typeof FieldValueGuard<Values>>>;
 	Header: FC;
 	Body: FC<PropsWithChildren>;
 	Footer: FC<PropsWithChildren>;
 }
 
-const createForm = <Values extends Record<string, any>>(
+const createForm = <Values extends FormValues>(
 	{ id, methods, onSubmit }: Props<Values>,
 	compornents: {
 		fields: Form<Values>["Field"];

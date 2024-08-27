@@ -1,9 +1,9 @@
 import { useCallback, useId } from "react";
 import { useForm as useRHForm } from "react-hook-form";
 import type { DefaultValues, FieldErrors, Path } from "react-hook-form";
-import { createForm } from "./create-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { ObjectSchema } from "yup";
+import { createForm } from "./create-form";
 import { Field } from "./fields/Field.tsx";
 import { TextField } from "./fields/TextField.tsx";
 import { SubmitButton } from "./SubmitButton.tsx";
@@ -60,13 +60,7 @@ const useForm = <Values extends FormValues>({
 							{...props}
 							errorMessage={getErrorMessage(props.name, errors)}
 						>
-							{(props) => (
-								<RadioGroupField
-									{...props}
-									options={options}
-									defaultValue={defaultValues[props.name] as string}
-								/>
-							)}
+							{(props) => <RadioGroupField {...props} options={options} />}
 						</Field>
 					),
 					Select: ({ options, ...props }) => (
@@ -94,20 +88,13 @@ const useForm = <Values extends FormValues>({
 				buttons: {
 					Submit: (props) => <SubmitButton id={id} {...props} />,
 				},
-				// Define guard outside useCallback to remove the dependency.
-				guard: () => <></>,
+				guard: FieldValueGuard,
 				header: () => <FormHeader errors={errors} />,
-				body: ({ children }) => <FormBody>{children}</FormBody>,
+				body: FormBody,
 				footer: ({ children }) => <footer>{children}</footer>,
 			},
 		),
 		[errors],
-	);
-
-	Form.Guard = ({ name, allowValue, children }) => (
-		<FieldValueGuard name={name} allowValue={allowValue} watch={methods.watch}>
-			{children}
-		</FieldValueGuard>
 	);
 
 	return {
