@@ -57,7 +57,8 @@ const styles = {
 		&:has(input:not(:required)) {
 			label::after {
 				content: "optional";
-				color: #ccc;
+				font-weight: normal;
+				color: #aaa;
 			}
 		}
 	`,

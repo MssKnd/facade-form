@@ -75,6 +75,7 @@ const createForm = <Values extends Record<string, any>>(
 const style = css`
 	display: grid;
 	gap: 24px;
+	font-family: sans-serif;
 `;
 
 export { createForm, type BaseFieldProps, type FieldProps };
