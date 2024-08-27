@@ -102,7 +102,7 @@ const useForm = <Values extends FormValues>({
 				footer: ({ children }) => <footer>{children}</footer>,
 			},
 		),
-		[],
+		[errors],
 	);
 
 	return {
