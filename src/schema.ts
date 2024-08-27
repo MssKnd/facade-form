@@ -5,7 +5,7 @@ const profileSchema = object({
   nickname: string().default(""),
   type: string().oneOf(["admin", "user"]).default("user"),
   language: string().oneOf(["en", "ja"]).default("en"),
-  tags: array(string()).default(['test', 'test2']),
+  tags: array(string()).default(['tag1', 'tag2']),
 });
 
 export { profileSchema };
