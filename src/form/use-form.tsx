@@ -104,7 +104,11 @@ const useForm = <Values extends FormValues>({
 		[errors],
 	);
 
-	Form.Guard = FieldValueGuard;
+	Form.Guard = ({ name, allowValue, children }) => (
+		<FieldValueGuard name={name} allowValue={allowValue} watch={methods.watch}>
+			{children}
+		</FieldValueGuard>
+	);
 
 	return {
 		Form,

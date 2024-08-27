@@ -37,7 +37,7 @@ interface Form<Values extends FormValues> extends FC<PropsWithChildren> {
 	Button: {
 		Submit: FC<{ label: string }>;
 	};
-	Guard: FC<ComponentProps<typeof FieldValueGuard<Values>>>;
+	Guard: FC<Omit<ComponentProps<typeof FieldValueGuard<Values>>, "watch">>;
 	Header: FC;
 	Body: FC<PropsWithChildren>;
 	Footer: FC<PropsWithChildren>;

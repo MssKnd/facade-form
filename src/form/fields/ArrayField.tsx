@@ -44,7 +44,7 @@ const ArrayField = <Values extends FormValues>({
 					{fields.map((field, index) => (
 						<div key={field.id} css={styles.field}>
 							{children({
-								id: id + field.id,
+								id: index === 0 ? id : id + field.id,
 								...register(`${name}.${index}` as Path<Values>),
 								...props,
 								...fieldProps,

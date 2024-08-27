@@ -20,7 +20,9 @@ const RadioGroupField = forwardRef<HTMLInputElement, Props>(
 					<li key={option.value} css={styles.item}>
 						<label>
 							<input
-								id={`${id}_${option.value}`}
+								id={
+									defaultValue === option.value ? id : `${id}_${option.value}`
+								}
 								type="radio"
 								ref={ref}
 								defaultChecked={defaultValue === option.value}
