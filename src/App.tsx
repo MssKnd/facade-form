@@ -18,6 +18,7 @@ export default function App() {
 	return (
 		<div className="App">
 			<Form>
+				<Form.Header />
 				<Form.Body>
 					<Form.Field.Text label="Name" name="name" required />
 					<Form.Field.Text label="Nickame" name="nickname" />

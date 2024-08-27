@@ -38,7 +38,7 @@ interface Form<Values extends FormValues> extends FC<PropsWithChildren> {
 		Submit: FC<{ label: string }>;
 	};
 	Guard: FC<ComponentProps<typeof FieldValueGuard<Values>>>;
-	Header: FC<PropsWithChildren>;
+	Header: FC;
 	Body: FC<PropsWithChildren>;
 	Footer: FC<PropsWithChildren>;
 }
@@ -50,6 +50,7 @@ const createForm = <Values extends Record<string, any>>(
 		arrayFields: Form<Values>["ArrayField"];
 		buttons: Form<Values>["Button"];
 		guard: Form<Values>["Guard"];
+		header: Form<Values>["Header"];
 		body: Form<Values>["Body"];
 		footer: Form<Values>["Footer"];
 	},
@@ -66,6 +67,7 @@ const createForm = <Values extends Record<string, any>>(
 	Form.ArrayField = compornents.arrayFields;
 	Form.Button = compornents.buttons;
 	Form.Guard = compornents.guard;
+	Form.Header = compornents.header;
 	Form.Body = compornents.body;
 	Form.Footer = compornents.footer;
 

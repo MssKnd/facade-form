@@ -13,6 +13,7 @@ import { FormBody } from "./layouts/FormBody.tsx";
 import { ArrayField } from "./fields/ArrayField.tsx";
 import { FieldValueGuard } from "./FieldValueGuard.tsx";
 import { RadioGroupField } from "./fields/RadioGroupField.tsx";
+import { FormHeader } from "./layouts/FormHeader.tsx";
 import type { FormValues } from "./types.ts";
 
 type Props<Values extends FormValues> = {
@@ -98,6 +99,7 @@ const useForm = <Values extends FormValues>({
 						{children}
 					</FieldValueGuard>
 				),
+				header: () => <FormHeader errors={errors} />,
 				body: ({ children }) => <FormBody>{children}</FormBody>,
 				footer: ({ children }) => <footer>{children}</footer>,
 			},
