@@ -94,11 +94,8 @@ const useForm = <Values extends FormValues>({
 				buttons: {
 					Submit: (props) => <SubmitButton id={id} {...props} />,
 				},
-				guard: ({ allowValue, name, children }) => (
-					<FieldValueGuard allowValue={allowValue} name={name}>
-						{children}
-					</FieldValueGuard>
-				),
+				// Define guard outside useCallback to remove the dependency.
+				guard: () => <></>,
 				header: () => <FormHeader errors={errors} />,
 				body: ({ children }) => <FormBody>{children}</FormBody>,
 				footer: ({ children }) => <footer>{children}</footer>,
@@ -106,6 +103,8 @@ const useForm = <Values extends FormValues>({
 		),
 		[errors],
 	);
+
+	Form.Guard = FieldValueGuard;
 
 	return {
 		Form,

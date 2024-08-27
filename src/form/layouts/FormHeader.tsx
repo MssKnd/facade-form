@@ -20,7 +20,7 @@ const FormHeader = <Values extends FormValues>({
 					<li
 						key={String(error?.message)}
 						onClick={() => {
-							document.getElementsByName(error?.ref?.name)[0]?.focus()
+							document.getElementsByName(error?.ref?.name)[0]?.focus();
 						}}
 						css={styles.item}
 					>
