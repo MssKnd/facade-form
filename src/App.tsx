@@ -24,7 +24,7 @@ export default function App() {
 					<Form.Field.Text label="Nickame" name="nickname" />
 					<Form.Field.Radio label="Type" name="type" options={USER_TYPE_OPTIONS} />
 					<Form.Guard allowValue='admin' name="type" >
-						Use this when you want to branch depending on the input value.
+						Use this when you want to display depending on the input value.
 					</Form.Guard>
 					<Form.Field.Select label="Language" name="language" options={LANGUAGE_TYPE_OPTIONS} required/>
 					<Form.ArrayField.Text label="Tags" name="tags" defaultValue='' />
